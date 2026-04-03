@@ -1,12 +1,5 @@
-databases:
-  - name: xdrive-postgres
-    databaseName: xdrive
-    plan: free
-
 services:
   # ── Backend API (Private Service) ──
-  # Deployed as a Private Service so it's not exposed to the public internet natively,
-  # but internal DNS makes it available to the frontend perfectly via "http://backend:8080"
   - type: pserv
     name: backend
     env: docker
@@ -15,30 +8,10 @@ services:
     envVars:
       - key: SERVER_PORT
         value: 8080
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://${PG_HOST}:${PG_PORT}/${PG_DB}
-      - key: PG_HOST
-        fromDatabase:
-          name: xdrive-postgres
-          property: host
-      - key: PG_PORT
-        fromDatabase:
-          name: xdrive-postgres
-          property: port
-      - key: PG_DB
-        fromDatabase:
-          name: xdrive-postgres
-          property: database
-      - key: SPRING_DATASOURCE_USERNAME
-        fromDatabase:
-          name: xdrive-postgres
-          property: user
-      - key: SPRING_DATASOURCE_PASSWORD
-        fromDatabase:
-          name: xdrive-postgres
-          property: password
       - key: JWT_SECRET
         generateValue: true
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://xdrive-frontend.onrender.com
       # Note: For file storage to work, you must still provide MinIO credentials
       # or hook it up to a real AWS S3 bucket.
       - key: MINIO_URL
