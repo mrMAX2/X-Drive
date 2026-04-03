@@ -1,6 +1,6 @@
 services:
-  # ── Backend API (Private Service) ──
-  - type: pserv
+  # ── Backend API (Now a Web Service to fit Free Tier) ──
+  - type: web
     name: backend
     env: docker
     rootDir: backend
@@ -12,8 +12,6 @@ services:
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
         value: https://xdrive-frontend.onrender.com
-      # Note: For file storage to work, you must still provide MinIO credentials
-      # or hook it up to a real AWS S3 bucket.
       - key: MINIO_URL
         value: http://minio-not-configured:9000
       - key: MINIO_ACCESS_KEY
@@ -32,11 +30,11 @@ services:
         value: 80
       - key: BACKEND_HOST
         fromService:
-          type: pserv
+          type: web
           name: backend
           property: host
       - key: BACKEND_PORT
         fromService:
-          type: pserv
+          type: web
           name: backend
           property: port
