@@ -55,6 +55,15 @@ services:
     rootDir: frontend
     plan: free
     envVars:
-      # Nginx uses this to substitute inside the container if needed (though our nginx.conf hardcodes backend)
       - key: PORT
         value: 80
+      - key: BACKEND_HOST
+        fromService:
+          type: pserv
+          name: backend
+          property: host
+      - key: BACKEND_PORT
+        fromService:
+          type: pserv
+          name: backend
+          property: port
